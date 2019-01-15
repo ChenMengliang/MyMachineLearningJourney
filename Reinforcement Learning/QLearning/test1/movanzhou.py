@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
 # @Time             : 2019-01-14 21:46
 # @Author           : Keith
-# @File             : test.py
+# @File             : movanzhou.py
 # @Software         : PyCharm
-# @About            :
+# @About            : movan python QLearning的小例子
 
 import numpy as np
 import pandas as pd
@@ -20,6 +20,7 @@ GAMMA = 0.9  # discount factor
 MAX_EPISODES = 13  # maximun episodes
 FRESH_TIME = 0.01  # fresh time for one move
 
+
 # initial q table
 def build_q_table(n_state, actions):
     table = pd.DataFrame(
@@ -29,38 +30,41 @@ def build_q_table(n_state, actions):
     print(table)
     return table
 
-def choose_action(state,q_table):
-    #This is how to choose an action
-    state_action = q_table.iloc[state,:]
-    if(np.random.uniform() > EPSILON or (state_action.all() == 0)):
+
+def choose_action(state, q_table):
+    # This is how to choose an action
+    state_action = q_table.iloc[state, :]
+    if (np.random.uniform() > EPSILON or (state_action.all() == 0)):
         action_name = np.random.choice(ACTIONS)
     else:
         action_name = state_action.idxmax()
 
     return action_name
 
-def get_env_feedback(S,A):
-    #This is how agent will interact with the environment
-    if A == 'right':        #move right
-        if S == N_STATES - 2:    #terminate
+
+def get_env_feedback(S, A):
+    # This is how agent will interact with the environment
+    if A == 'right':  # move right
+        if S == N_STATES - 2:  # terminate
             S_ = 'terminal'
             R = 1
         else:
             S_ = S + 1
             R = 0
-    else:                   #move left
+    else:  # move left
         R = 0
         if S == 0:
             S_ = S
         else:
-            S_ = S -1
-    return S_,R
+            S_ = S - 1
+    return S_, R
+
 
 def update_env(S, episode, step_counter):
     # This is how environment be updated
-    env_list = ['-']*(N_STATES-1) + ['T']   # '---------T' our environment
+    env_list = ['-'] * (N_STATES - 1) + ['T']  # '---------T' our environment
     if S == 'terminal':
-        interaction = 'Episode %s: total_steps = %s' % (episode+1, step_counter)
+        interaction = 'Episode %s: total_steps = %s' % (episode + 1, step_counter)
         print('\r{}'.format(interaction), end='')
         time.sleep(2)
         print('\r                                ', end='')
@@ -69,6 +73,7 @@ def update_env(S, episode, step_counter):
         interaction = ''.join(env_list)
         print('\r{}'.format(interaction), end='')
         time.sleep(FRESH_TIME)
+
 
 def rl():
     # main part of RL loop
@@ -84,15 +89,15 @@ def rl():
             S_, R = get_env_feedback(S, A)  # take action & get next state and reward
             q_predict = q_table.loc[S, A]
             if S_ != 'terminal':
-                q_target = R + GAMMA * q_table.iloc[S_, :].max()   # next state is not terminal
+                q_target = R + GAMMA * q_table.iloc[S_, :].max()  # next state is not terminal
             else:
-                q_target = R     # next state is terminal
-                is_terminated = True    # terminate this episode
+                q_target = R  # next state is terminal
+                is_terminated = True  # terminate this episode
 
             q_table.loc[S, A] += ALPHA * (q_target - q_predict)  # update
             S = S_  # move to next state
 
-            update_env(S, episode, step_counter+1)
+            update_env(S, episode, step_counter + 1)
             step_counter += 1
     return q_table
 

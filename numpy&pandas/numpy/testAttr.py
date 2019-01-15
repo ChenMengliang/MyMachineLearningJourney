@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # @Time             : 2019-01-15 11:29
 # @Author           : Keith
-# @File             : test1.py
+# @File             : testAttr.py
 # @Software         : PyCharm
 # @About            : numpy 几种属性测试
 

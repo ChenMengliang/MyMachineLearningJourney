@@ -18,7 +18,7 @@ EPSILON = 0.9  # greedy police
 ALPHA = 0.1  # learning rate
 GAMMA = 0.9  # discount factor
 MAX_EPISODES = 13  # maximun episodes
-FRESH_TIME = 0.01  # fresh time for one move
+FRESH_TIME = 1  # fresh time for one move
 
 
 # initial q table

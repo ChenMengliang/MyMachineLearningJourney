@@ -18,7 +18,7 @@ EPSILON = 0.9  # greedy police
 ALPHA = 0.1  # learning rate
 GAMMA = 0.9  # discount factor
 MAX_EPISODES = 13  # maximun episodes
-FRESH_TIME = 1  # fresh time for one move
+FRESH_TIME = 0.01  # fresh time for one move
 
 
 # initial q table
@@ -67,7 +67,7 @@ def update_env(S, episode, step_counter):
         interaction = 'Episode %s: total_steps = %s' % (episode + 1, step_counter)
         print('\r{}'.format(interaction), end='')
         time.sleep(2)
-        print('\r                                ', end='')
+        # print('\r                                ', end='')
     else:
         env_list[S] = 'o'
         interaction = ''.join(env_list)
